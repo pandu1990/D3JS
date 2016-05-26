@@ -10,14 +10,7 @@
         var w = 400;
         var ds; // global var for data
         
-        d3.csv("MonthlySales.csv", function(error, data) {
-            if(error) {
-                console.log(error);
-            } else {
-                console.log(data);
-                ds = data;
-            }
-            
+        function buildLine() {
             var lineFun = d3.svg.line()
                             .x(function(d) { return (d.month-20130001)/3.25; })
                             .y(function(d) { return h-d.sales; })
@@ -33,6 +26,17 @@
                             "fill": "none"
                         });
            
+        }
+        
+        d3.csv("MonthlySales.csv", function(error, data) {
+            if(error) {
+                console.log(error);
+            } else {
+                console.log(data);
+                ds = data;
+            }
+            
+            buildLine();
         });
         
     </script>
