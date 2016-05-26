@@ -9,6 +9,9 @@
         var h = 100;
         var w = 400;
         var ds; // global var for data
+        var salesTotal = 0.0;
+        var salesAvg = 0.0;
+        var metrics = [];
         
         function buildLine() {
             var lineFun = d3.svg.line()
@@ -28,6 +31,29 @@
            
         }
         
+        function showTotals() {
+            var t = d3.select("body").append("table");
+            
+            //get total
+            for (var i = 0; i < ds.length; i++) {
+                salesTotal += ds[i]['sales'] * 1;
+            }
+            
+            salesAvg = salesTotal/ds.length;
+            
+            //add metrics to array
+            metrics.push("Sales Total: " + salesTotal);
+            metrics.push("Sales Avg: " + salesAvg.toFixed(2));
+            
+            //add total to the table
+            var tr = t.selectAll("tr")
+                        .data(metrics)
+                        .enter()
+                        .append("tr")
+                        .append("td")
+                        .text(function(d) { return d; });
+        }
+        
         d3.csv("MonthlySales.csv", function(error, data) {
             if(error) {
                 console.log(error);
@@ -37,6 +63,7 @@
             }
             
             buildLine();
+            showTotals();
         });
         
     </script>
